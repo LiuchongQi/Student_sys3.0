@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.qlc.Student_sys.dao.StudentDao">
+
+	<resultMap id="studentMap" type="pers.qlc.Student_sys.entity.Student">
+		<id property="Username" column="Username" javaType="java.lang.String"/>
+		<result property="Password" column="Password" javaType="java.lang.String" />
+		<result property="Sname" column="Sname" javaType="java.lang.String" />
+		<result property="Ssex" column="Ssex" javaType="java.lang.String" />
+		<result property="Sage" column="Sage" javaType="integer" />
+		<result property="Sdept" column="Sdept" javaType="java.lang.String" />
+		<result property="Sclass" column="Sclass" javaType="java.lang.String" />
+		<result property="Grade" column="Grade" javaType="java.lang.String" />
+	</resultMap>
+
+	<insert id="insertStudent" parameterType="pers.qlc.Student_sys.entity.Student">
+		insert into Student_info(Username,Password,Sname,Ssex,Sage,Sdept,Sclass,Grade)
+			values(#{Username},#{Password},#{Sname},#{Ssex},#{Sage},#{Sdept},#{Sclass},#{Grade});
+	</insert>
+	
+	<delete id="deleteStudent" parameterType="java.lang.String">
+		delete from Student_info where Username=#{id}
+	</delete>
+	<update id="updateStudent" parameterType="pers.qlc.Student_sys.entity.Student">
+		update Student_info set Sname=#{Sname},Ssex=#{Ssex},Sage=#{Sage}
+			,Sdept=#{Sdept},Sclass=#{Sclass},Grade=#{Grade} where Username=#{Username}
+	</update>
+	
+	<update id="updatePass">
+		update Student_info set Password=#{1} where Username=#{0}
+	</update>
+	
+	<select id="selectAll" resultMap="studentMap">
+		select * from Student_info where 1=1
+		<if test="param1 !=null and'' neq param1">
+			and Username=#{0}
+		</if>
+		<if test="param2 !=null and'' neq param2">
+			and Sname=#{1}
+		</if>
+		<if test="param3 !=null and'' neq param3">
+			and Sdept=#{2}
+		</if>
+		<if test="param4 !=null and'' neq param4">
+			and Grade=#{3}
+		</if>
+		<if test="param1==null and param2==null and param3==null and param4==null">
+			and 1=2
+		</if>
+		<if test="'' eq param1 and '' eq param2 and '' eq param3 and '' eq param4">
+			and 1=3
+		</if>
+	</select>
+	
+	<select id="selectById" resultMap="studentMap" parameterType="java.lang.String">
+		select * from Student_info where Username=#{id}
+	</select>
+</mapper>

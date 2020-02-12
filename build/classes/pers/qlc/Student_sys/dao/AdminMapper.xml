@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.qlc.Student_sys.dao.AdminDao">
+	<resultMap id="adminMap"
+		type="pers.qlc.Student_sys.entity.Admin">
+		<id property="Username" column="Username"
+			javaType="java.lang.String" />
+		<result property="Password" column="Password"
+			javaType="java.lang.String" />
+	</resultMap>
+
+	<insert id="insertAdmin"
+		parameterType="pers.qlc.Student_sys.entity.Admin">
+		insert into
+		Admin_info(Username,Password)values(#{Username},#{Password});
+	</insert>
+
+	<select id="selectById" parameterType="java.lang.String"
+		resultMap="adminMap">
+		select * from Admin_info where Username=#{id}
+	</select>
+
+	<select id="selectAll" resultMap="adminMap">
+		select * from Admin_info
+	</select>
+
+	<delete id="deleteAdmin" parameterType="java.lang.String">
+		delete from Admin_info
+		where Username=#{id}
+	</delete>
+
+	<update id="updatePass">
+		update Admin_info set Password=#{1}
+		where
+		Username=#{0}
+	</update>
+</mapper>

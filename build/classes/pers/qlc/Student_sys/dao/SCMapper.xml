@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.qlc.Student_sys.dao.SCDao">
+
+	<resultMap id="courseMap"
+		type="pers.qlc.Student_sys.entity.Course">
+		<id property="Cno" column="Cno" javaType="java.lang.String" />
+		<result property="Cname" column="Cname"
+			javaType="java.lang.String" />
+		<result property="Tno" column="Tno" javaType="java.lang.String" />
+		<result property="Cday" column="Cday"
+			javaType="java.lang.String" />
+		<result property="Ctime" column="Ctime"
+			javaType="java.lang.String" />
+		<result property="Score" column="Score"
+			javaType="integer" />
+	</resultMap>
+	
+	<resultMap id="studentMap" type="pers.qlc.Student_sys.entity.Student">
+		<id property="Username" column="Username" javaType="java.lang.String"/>
+		<result property="Sname" column="Sname" javaType="java.lang.String" />
+		<result property="Ssex" column="Ssex" javaType="java.lang.String" />
+		<result property="Sage" column="Sage" javaType="integer" />
+		<result property="Sdept" column="Sdept" javaType="java.lang.String" />
+		<result property="Sclass" column="Sclass" javaType="java.lang.String" />
+		<result property="Grade" column="Grade" javaType="java.lang.String" />
+		<result property="Score" column="Score" javaType="integer" />
+	</resultMap>
+
+	<insert id="insertSC" parameterType="pers.qlc.Student_sys.entity.SC">
+		insert into SC(Cno,Sno)values(#{Cno},#{Sno});
+	</insert>
+	
+	<select id="selectByCourse" parameterType="java.lang.String" resultMap="studentMap">
+		select Student_info.Username,Sname,Ssex,Sage,Sdept,Grade,Score from SC,Student_info where SC.Sno=Student_info.Username and SC.Cno=#{Cno}
+	</select>
+	
+	<select id="selectByStudent" parameterType="java.lang.String" resultMap="courseMap">
+		select SC.Cno,Cname,Tno,Cday,Ctime,Score from SC,Course_info where SC.Cno=Course_info.Cno and SC.Sno=#{Sno}
+	</select>
+	
+	<delete id="deleteSC" >
+		delete from SC where Sno=#{1} and Cno=#{0}
+	</delete>
+	
+	<update id="insertScore" >
+		update SC set Score=#{Score} where Sno=#{Sno} and Cno=#{Cno}
+	</update>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.qlc.Student_sys.dao.TeacherDao">
+
+	<resultMap id="teacherMap"
+		type="pers.qlc.Student_sys.entity.Teacher">
+		<id property="Username" column="Username"
+			javaType="java.lang.String" />
+		<result property="Password" column="Password"
+			javaType="java.lang.String" />
+		<result property="Tname" column="Tname"
+			javaType="java.lang.String" />
+		<result property="Tsex" column="Tsex"
+			javaType="java.lang.String" />
+		<result property="Tage" column="Tage" javaType="integer" />
+		<result property="Tjob" column="Tjob"
+			javaType="java.lang.String" />
+	</resultMap>
+
+	<resultMap id="courseMap"
+		type="pers.qlc.Student_sys.entity.Course">
+		<id property="Cno" column="Cno" javaType="java.lang.String" />
+		<result property="Cname" column="Cname"
+			javaType="java.lang.String" />
+		<result property="Tno" column="Tno" javaType="java.lang.String" />
+		<result property="Cday" column="Cday"
+			javaType="java.lang.String" />
+		<result property="Ctime" column="Ctime"
+			javaType="java.lang.String" />
+	</resultMap>
+
+	<insert id="insertTeacher"
+		parameterType="pers.qlc.Student_sys.entity.Teacher">
+		insert into
+		Teacher_info(Username,Password,Tname,Tsex,Tage,Tjob)
+		values(#{Username},#{Password},#{Tname},#{Tsex},#{Tage},#{Tjob});
+	</insert>
+
+	<delete id="deleteTeacher" parameterType="java.lang.String">
+		delete from
+		Teacher_info where Username=#{id}
+	</delete>
+	<update id="updateTeacher"
+		parameterType="pers.qlc.Student_sys.entity.Teacher">
+		update Teacher_info set
+		Tname=#{Tname},Tsex=#{Tsex},Tage=#{Tage},Tjob=#{Tjob} where
+		Username=#{Username}
+	</update>
+
+	<update id="updatePass">
+		update Teacher_info set Password=#{1} where
+		Username=#{0}
+	</update>
+
+	<select id="selectAll" resultMap="teacherMap">
+		select * from Teacher_info where 1=1
+		<if test="param1 !=null and'' neq param1">
+			and Username=#{0}
+		</if>
+		<if test="param2 !=null and'' neq param2">
+			and Tname=#{1}
+		</if>
+		<if test="param3 !=null and'' neq param3">
+			and Tjob=#{2}
+		</if>
+		<if test="param1==null and param2==null and param3==null">
+			and 1=2
+		</if>
+		<if test="'' eq param1 and '' eq param2 and '' eq param3">
+			and 1=3
+		</if>
+	</select>
+
+	<select id="selectCourse" resultMap="courseMap"
+		parameterType="java.lang.String">
+		select * from Course_info where Tno=#{id}
+	</select>
+
+	<select id="selectById" resultMap="teacherMap"
+		parameterType="java.lang.String">
+		select * from Teacher_info where Username=#{id}
+	</select>
+</mapper>
